@@ -4,6 +4,7 @@ import com.rozoomcool.chguburoapi.entity.*
 import com.rozoomcool.chguburoapi.repository.ServiceDataRepository
 import com.rozoomcool.chguburoapi.service.ServiceDataService
 import com.rozoomcool.chguburoapi.service.UserService
+import com.rozoomcool.chguburoapi.util.storage.FileCopyService
 import jakarta.transaction.Transactional
 import org.springframework.boot.CommandLineRunner
 import org.springframework.core.io.ResourceLoader
@@ -17,8 +18,9 @@ import java.nio.file.StandardCopyOption
 
 @Component
 class ServiceDataDataLoader(
-    private val resourceLoader: ResourceLoader,
-    private val serviceDataRepository: ServiceDataRepository
+        private val resourceLoader: ResourceLoader,
+        private val serviceDataRepository: ServiceDataRepository,
+        private val fileCopyService: FileCopyService
 ) : CommandLineRunner {
 
     val location: Path = resourceLoader.getResource("classpath:templates").file.toPath()
@@ -30,17 +32,19 @@ class ServiceDataDataLoader(
     }
 
     fun addDocuments() {
+        try {
+            fileCopyService.copyResource("classpath:templates/mestotrebdoc.docx", "uploads")
 
-        val sourceFile = Path.of(location.toString(), "mestotrebdoc.docx")
-        val targetFile = Path.of(uploadDirectory.toString(), "mestotrebdoc.docx")
-        Files.copy(sourceFile, targetFile, StandardCopyOption.REPLACE_EXISTING)
-
-        serviceDataRepository.save(
-            ServiceData(
-                forRole = Role.STUDENT,
-                title = "Справка по месту требования",
-                document = Document(filename = "mestotrebdoc.docx")
+            serviceDataRepository.save(
+                    ServiceData(
+                            forRole = Role.STUDENT,
+                            title = "Справка по месту требования",
+                            document = Document(filename = "mestotrebdoc.docx")
+                    )
             )
-        )
+        } catch (e: Exception) {
+            println(":::::::: Error service data loader ${e.message}")
+        }
+
     }
 }
