@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "snils_data")
-class SnilsData (
+@Table(name = "inn_data")
+class InnData(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

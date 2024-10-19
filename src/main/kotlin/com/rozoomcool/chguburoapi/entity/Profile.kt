@@ -1,5 +1,7 @@
 package com.rozoomcool.chguburoapi.entity
 
+import com.fasterxml.jackson.annotation.JsonManagedReference
+import jakarta.mail.Address
 import jakarta.persistence.*
 import java.util.*
 
@@ -9,12 +11,17 @@ class Profile(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
-    var firstname: String? = null,
-    var lastname: String? = null,
-    var surname: String? = null,
-    var phone: String? = null,
-    var dateOfBirth: Date? = null,
+    var address: String? = null,
 
-    @OneToOne
-    var passportData: PassportData? = null
+    @OneToOne(cascade = [CascadeType.ALL])
+    @JsonManagedReference
+    var passportData: PassportData? = null,
+
+    @OneToOne(cascade = [CascadeType.ALL])
+    @JsonManagedReference
+    var snilsData: SnilsData? = null,
+
+    @OneToOne(cascade = [CascadeType.ALL])
+    @JsonManagedReference
+    var innData: InnData? = null
 )

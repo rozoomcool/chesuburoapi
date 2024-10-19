@@ -25,8 +25,6 @@ class DataLoader(
                 role = Role.STUDENT,
 //                department = Department.STUDENT,
                 profile = Profile(
-                    firstname = "Sigma",
-                    lastname = "Gigachad"
                 )
             )
         )

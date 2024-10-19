@@ -1,5 +1,6 @@
 package com.rozoomcool.chguburoapi.entity
 
+import com.fasterxml.jackson.annotation.JsonBackReference
 import jakarta.persistence.*
 import java.util.Date
 
@@ -18,5 +19,6 @@ class PassportData(
     var issuedBy: String? = null,
 
     @OneToOne
+    @JsonBackReference
     var profile: Profile? = null,
 )
