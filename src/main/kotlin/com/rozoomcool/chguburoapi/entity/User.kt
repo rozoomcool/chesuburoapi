@@ -12,8 +12,8 @@ class User(
     @Column(name = "username", unique = true, nullable = false)
     var username: String,
 
-    @OneToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    var profile: Profile = Profile(),
+    @OneToOne(cascade = [CascadeType.ALL])
+    var profile: Profile? = null,
 
     @JsonIgnore
     @Column(name = "password", nullable = false)

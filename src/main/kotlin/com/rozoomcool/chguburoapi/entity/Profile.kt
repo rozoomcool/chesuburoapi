@@ -11,6 +11,7 @@ class Profile(
     var id: Long? = null,
     var firstname: String? = null,
     var lastname: String? = null,
+    var surname: String? = null,
     var phone: String? = null,
     var dateOfBirth: Date? = null
 )

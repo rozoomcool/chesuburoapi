@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import kotlin.jvm.Throws
 import kotlin.jvm.optionals.getOrNull
 
@@ -26,10 +27,10 @@ class UserService(
     fun getAll(): Iterable<User> = userRepository.findAll()
 
     fun findByUsername(username: String): User {
-        val user = userRepository.findByUsername(username) ?: throw EntityNotFoundException("User not found")
-        return user.get()
+        return userRepository.findByUsername(username).getOrNull() ?: throw EntityNotFoundException("User not found")
     }
 
+    @Transactional
     fun create(user: User): User {
         if (userRepository.existsByUsername(user.username)) {
             throw EntityAlreadyExistsException("Этот пользователь уже существует")
