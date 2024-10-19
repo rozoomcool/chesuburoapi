@@ -7,7 +7,7 @@ class ServiceData(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id: Long? = null,
     var forRole: Role,
     var title: String,
-    @OneToOne
+    @OneToOne(cascade = [CascadeType.ALL])
     var document: Document? = null
 ) {
 }

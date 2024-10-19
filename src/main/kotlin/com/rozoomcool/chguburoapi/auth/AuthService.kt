@@ -1,7 +1,6 @@
 package com.rozoomcool.chguburoapi.auth
 
 import com.rozoomcool.chguburoapi.dto.UserAuthRequest
-import com.rozoomcool.chguburoapi.entity.Department
 import com.rozoomcool.chguburoapi.entity.Profile
 import com.rozoomcool.chguburoapi.entity.Role
 import com.rozoomcool.chguburoapi.entity.User
@@ -42,7 +41,6 @@ class AuthService(
                 username = request.username,
                 password = passwordEncoder.encode(request.password),
                 role = Role.STUDENT,
-                department = Department.STUDENT
             )
             userService.create(userToCreate)
 //        } catch (e: Exception) {

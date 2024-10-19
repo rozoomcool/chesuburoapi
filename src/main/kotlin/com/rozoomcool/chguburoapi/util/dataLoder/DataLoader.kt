@@ -23,7 +23,7 @@ class DataLoader(
                 username = "student",
                 password = passwordEncoder.encode("student"),
                 role = Role.STUDENT,
-                department = Department.STUDENT,
+//                department = Department.STUDENT,
                 profile = Profile(
                     firstname = "Sigma",
                     lastname = "Gigachad"
@@ -35,15 +35,15 @@ class DataLoader(
                 username = "education",
                 password = passwordEncoder.encode("education"),
                 role = Role.EMPLOYEE,
-                department = Department.EDUCATION_DEPARTMENT
+//                department = Department.EDUCATION_DEPARTMENT
             )
         )
         var administration = userService.create(
             User(
                 username = "admin",
                 password = passwordEncoder.encode("admin"),
-                role = Role.EMPLOYEE,
-                department = Department.ADMINISTRATION
+                role = Role.ADMIN,
+//                department = Department.ADMINISTRATION
             )
         )
 
