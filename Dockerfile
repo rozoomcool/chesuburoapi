@@ -11,6 +11,7 @@ COPY gradle /app/gradle
 # Качаем зависимости (кэшируем)
 RUN ./gradlew build --no-daemon || return 0
 
+RUN chmod +x ./gradlew
 # Копируем весь проект в контейнер
 COPY . .
 
