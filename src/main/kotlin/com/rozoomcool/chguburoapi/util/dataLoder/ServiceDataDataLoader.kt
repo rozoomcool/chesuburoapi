@@ -21,7 +21,7 @@ class ServiceDataDataLoader(
 
     fun addDocuments() {
         try {
-            fileSystemStorageService.copyResourceFromTemplates("mestotrebdoc.docx", "uploads")
+//            fileSystemStorageService.copyResourceFromTemplates("mestotrebdoc.docx", "uploads")
 
             serviceDataRepository.save(
                     ServiceData(
