@@ -1,5 +1,5 @@
 package com.rozoomcool.chguburoapi.entity
 
 enum class Role {
-    STUDENT, EMPLOYEE
+    STUDENT, EMPLOYEE, MODERATOR, ADMIN
 }

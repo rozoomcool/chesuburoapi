@@ -4,20 +4,34 @@ server:
 spring:
   application:
     name: chguburoapi
-
+#  spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
   datasource:
-    url: jdbc:postgresql://localhost:5432/chesuburo
-    driverClassName: org.postgresql.Driver
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
     username: postgres
     password: root
   jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: create-drop
-#          ddl-auto: update
+    #          ddl-auto: update
     show-sql: true
     properties:
       hibernate:
         format_sql: true
+#  datasource:
+#    url: jdbc:postgresql://localhost:5432/chesuburo
+#    driverClassName: org.postgresql.Driver
+#    username: postgres
+#    password: root
+#  jpa:
+#    hibernate:
+#      ddl-auto: create-drop
+##          ddl-auto: update
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        format_sql: true
 
 token:
   access: hhsdjghfjkdhgjfsdhhhsdjghfjkdhgjfsdhhhsdjghfjkdhgjfsdhhhsdjghfjkdhgjfsdhhhsdjghfjkdhgjfsdh

@@ -22,6 +22,6 @@ class User(
     @Enumerated(value = EnumType.STRING)
     var role: Role,
 
-    @Enumerated(value = EnumType.STRING)
-    var department: Department
+//    @Enumerated(value = EnumType.STRING)
+//    var department: Department
 )
