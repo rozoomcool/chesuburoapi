@@ -8,4 +8,9 @@ import java.util.Date
 class PassportData(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id: Long? = null,
 
+    @OneToOne
+    var profile: Profile? = null,
+
+    @OneToMany()
+    var photos: List<MediaData> = mutableListOf()
 )

@@ -13,5 +13,8 @@ class Profile(
     var lastname: String? = null,
     var surname: String? = null,
     var phone: String? = null,
-    var dateOfBirth: Date? = null
+    var dateOfBirth: Date? = null,
+
+    @OneToOne
+    var passportData: PassportData? = null
 )
