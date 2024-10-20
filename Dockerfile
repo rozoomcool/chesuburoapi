@@ -15,6 +15,7 @@ RUN chmod +x ./gradlew build --no-daemon || return 0
 # Копируем весь проект в контейнер
 COPY . .
 
+RUN chmod +x ./gradlew
 # Выполняем финальную сборку приложения
 RUN ./gradlew build --no-daemon
 
