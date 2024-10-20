@@ -8,10 +8,10 @@ WORKDIR /app
 COPY build.gradle.kts settings.gradle.kts gradlew /app/
 COPY gradle /app/gradle
 
+RUN chmod +x ./gradlew
 # Качаем зависимости (кэшируем)
 RUN chmod +x ./gradlew build --no-daemon || return 0
 
-RUN chmod +x ./gradlew
 # Копируем весь проект в контейнер
 COPY . .
 
