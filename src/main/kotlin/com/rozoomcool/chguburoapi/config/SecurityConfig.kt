@@ -51,6 +51,7 @@ class SecurityConfiguration(
                 request
                     .requestMatchers("/api/v1/auth/**").permitAll()
                     .requestMatchers("/api/v1/service/**").permitAll()
+                    .requestMatchers("/api/v1/application/a/**").hasAnyRole(Role.ADMIN.name, Role.MODERATOR.name)
 //                    .requestMatchers("/media/**").permitAll()
                     .requestMatchers("/actuator/**").permitAll()
                     .requestMatchers("/health/**").permitAll()
@@ -67,7 +68,8 @@ class SecurityConfiguration(
     fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
 
     @Bean
-    fun authenticationManager(config: AuthenticationConfiguration): AuthenticationManager = config.getAuthenticationManager()
+    fun authenticationManager(config: AuthenticationConfiguration): AuthenticationManager =
+        config.getAuthenticationManager()
 
     @Bean
     fun authenticationProvider(): AuthenticationProvider {

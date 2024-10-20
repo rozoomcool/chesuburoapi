@@ -41,6 +41,7 @@ class AuthService(
                 username = request.username,
                 password = passwordEncoder.encode(request.password),
                 role = Role.STUDENT,
+                profile = Profile()
             )
             userService.create(userToCreate)
 //        } catch (e: Exception) {

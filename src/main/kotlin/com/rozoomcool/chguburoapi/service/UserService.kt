@@ -30,6 +30,10 @@ class UserService(
         return userRepository.findByUsername(username).getOrNull() ?: throw EntityNotFoundException("User not found")
     }
 
+    fun findById(userId: Long): User {
+        return userRepository.findById(userId).getOrNull() ?: throw EntityNotFoundException("User not found")
+    }
+
     @Transactional
     fun create(user: User): User {
         if (userRepository.existsByUsername(user.username)) {

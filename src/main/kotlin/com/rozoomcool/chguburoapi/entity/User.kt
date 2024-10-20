@@ -1,6 +1,7 @@
 package com.rozoomcool.chguburoapi.entity
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonManagedReference
 import jakarta.persistence.*
 
 @Entity
@@ -13,6 +14,7 @@ class User(
     var username: String,
 
     @OneToOne(cascade = [CascadeType.ALL])
+    @JsonManagedReference
     var profile: Profile? = null,
 
     @JsonIgnore

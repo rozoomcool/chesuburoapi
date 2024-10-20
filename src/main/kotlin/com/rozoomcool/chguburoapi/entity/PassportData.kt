@@ -16,9 +16,5 @@ class PassportData(
     var series: String? = null,
     var dateOfIssue: Date? = null,
     var departmentCode: Int? = null,
-    var issuedBy: String? = null,
-
-    @OneToOne
-    @JsonBackReference
-    var profile: Profile? = null,
+    var issuedBy: String? = null
 )

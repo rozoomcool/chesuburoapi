@@ -8,6 +8,7 @@ import org.springframework.hateoas.EntityModel
 import org.springframework.hateoas.PagedModel
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.security.Principal
@@ -20,6 +21,11 @@ class UserController(
     @GetMapping("/all")
     fun getAll(pageable: Pageable, assembler: PagedResourcesAssembler<User>): PagedModel<EntityModel<User>> =
         assembler.toModel(userService.getPage())
+
+    @GetMapping("/{id}")
+    fun getById(@PathVariable id: Long): ResponseEntity<User> {
+        return ResponseEntity.ok(userService.findById(id))
+    }
 
     @GetMapping()
     fun me(principal: Principal): User = userService.findByUsername(principal.name)

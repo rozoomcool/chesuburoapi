@@ -10,8 +10,5 @@ class InnData(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     var id: Long? = null,
-    var series: String? = null,
-    @OneToOne
-    @JsonBackReference
-    var profile: Profile? = null
+    var series: String? = null
 )

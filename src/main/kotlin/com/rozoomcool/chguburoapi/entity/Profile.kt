@@ -1,5 +1,6 @@
 package com.rozoomcool.chguburoapi.entity
 
+import com.fasterxml.jackson.annotation.JsonBackReference
 import com.fasterxml.jackson.annotation.JsonManagedReference
 import jakarta.mail.Address
 import jakarta.persistence.*
