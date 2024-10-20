@@ -10,6 +10,7 @@ import com.rozoomcool.chguburoapi.repository.UserApplicationRepository
 import com.rozoomcool.chguburoapi.repository.UserRepository
 import com.rozoomcool.chguburoapi.util.storage.FileSystemStorageService
 import jakarta.transaction.Transactional
+import org.apache.poi.util.Units
 import org.apache.poi.xwpf.usermodel.XWPFDocument
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.userdetails.UsernameNotFoundException
@@ -39,8 +40,9 @@ class UserApplicationService(
             serviceDataRepository.findById(serviceId).getOrNull() ?: throw EntityNotFoundException("Service not found")
 
         val reference = fileSystemStorageService.load(serviceData.document?.filename ?: "mestotrebdoc.docx")
+        val image = fileSystemStorageService.load(serviceData.document?.filename ?: "podpis.png")
         println(":::: ref $reference")
-        val filename = createDocumentWithUserData(reference, currentUser)
+        val filename = createDocumentWithUserData(reference,  image, currentUser)
         println(":::: filename $filename")
 
         return userApplicationRepository.save(
@@ -53,7 +55,7 @@ class UserApplicationService(
         )
     }
 
-    private fun createDocumentWithUserData(templatePath: Path, user: User): String {
+    private fun createDocumentWithUserData(templatePath: Path, imagePath: Path, user: User): String {
         val currentDate = LocalDate.now()
 
         // 1. Открываем шаблон документа
@@ -104,15 +106,50 @@ class UserApplicationService(
                 }
             }
 
-            // 4. Определим путь для сохранения нового документа
+            // 4. Вставляем изображение в конец документа
+            if (Files.exists(imagePath)) {
+                val imageData = Files.readAllBytes(imagePath)
+                val pictureType = getPictureType(imagePath)
+
+                // Создаем новый абзац для изображения
+                val imageParagraph = document.createParagraph()
+                val run = imageParagraph.createRun()
+
+                // Вставляем изображение
+                val width = 150 // ширина изображения в пикселях
+                val height = 150 // высота изображения в пикселях
+                Files.newInputStream(imagePath).use { imageInputStream ->
+                    run.addPicture(imageInputStream, pictureType, imagePath.fileName.toString(), Units.toEMU(width.toDouble()), Units.toEMU(height.toDouble()))
+                }
+            }
+
+
+            // 5. Определим путь для сохранения нового документа
             val newDocumentPath = Paths.get("$uploadsDir/${UUID.randomUUID()}.docx")
 
-            // 5. Сохраним новый документ на файловую систему
+            // 6. Сохраним новый документ на файловую систему
             Files.newOutputStream(newDocumentPath).use { outputStream ->
                 document.write(outputStream)
             }
 
             return newDocumentPath.fileName.toString()
+        }
+    }
+
+    // Функция для получения типа изображения по его расширению
+    private fun getPictureType(imagePath: Path): Int {
+        val fileExtension = imagePath.fileName.toString().substringAfterLast('.').lowercase()
+
+        return when (fileExtension) {
+            "png" -> XWPFDocument.PICTURE_TYPE_PNG
+            "jpg", "jpeg" -> XWPFDocument.PICTURE_TYPE_JPEG
+            "gif" -> XWPFDocument.PICTURE_TYPE_GIF
+            "bmp" -> XWPFDocument.PICTURE_TYPE_BMP
+            "emf" -> XWPFDocument.PICTURE_TYPE_EMF
+            "wmf" -> XWPFDocument.PICTURE_TYPE_WMF
+            "pict" -> XWPFDocument.PICTURE_TYPE_PICT
+            "tiff" -> XWPFDocument.PICTURE_TYPE_TIFF
+            else -> throw IllegalArgumentException("Unsupported image format: $fileExtension")
         }
     }
 
