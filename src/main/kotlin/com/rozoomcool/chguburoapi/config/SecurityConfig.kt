@@ -51,7 +51,7 @@ class SecurityConfiguration(
                 request
                     .requestMatchers("/api/v1/auth/**").permitAll()
                     .requestMatchers("/api/v1/service/**").permitAll()
-                    .requestMatchers("/api/v1/application/a/**").hasAnyRole(Role.ADMIN.name, Role.MODERATOR.name)
+//                    .requestMatchers("/api/v1/application/a/**").hasAnyRole(Role.ADMIN.name, Role.MODERATOR.name)
 //                    .requestMatchers("/media/**").permitAll()
                     .requestMatchers("/actuator/**").permitAll()
                     .requestMatchers("/health/**").permitAll()
@@ -82,7 +82,7 @@ class SecurityConfiguration(
     @Bean
     fun roleHierarchy(): RoleHierarchyImpl {
         val roleHierarchy = RoleHierarchyImpl()
-        roleHierarchy.setHierarchy("ROLE_EMPLOYEE > ROLE_STUDENT")
+        roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_MODERATOR > ROLE_EMPLOYEE > ROLE_STUDENT")
         return roleHierarchy
     }
 

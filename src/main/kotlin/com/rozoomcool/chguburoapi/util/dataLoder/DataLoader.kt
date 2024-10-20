@@ -45,6 +45,15 @@ class DataLoader(
             )
         )
 
+        var moderator = userService.create(
+            User(
+                username = "moder",
+                password = passwordEncoder.encode("moder"),
+                role = Role.MODERATOR,
+//                department = Department.ADMINISTRATION
+            )
+        )
+
 //        val subject = subjectService.add(Subject(name = "math"))
 //        var course = courseRepository.save(Course(title = "fjskldjf", description = "fgfd", complexity = Complexity.BEGINNER, subject = subject))
 //        val chapter = chapterRepository.save(Chapter(title = "gfkgdf", description = "fdgl", course = course, ordinal = 0))

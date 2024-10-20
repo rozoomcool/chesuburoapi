@@ -39,7 +39,9 @@ class UserApplicationService(
             serviceDataRepository.findById(serviceId).getOrNull() ?: throw EntityNotFoundException("Service not found")
 
         val reference = fileSystemStorageService.load(serviceData.document?.filename ?: "mestotrebdoc.docx")
+        println(":::: ref $reference")
         val filename = createDocumentWithUserData(reference, currentUser)
+        println(":::: filename $filename")
 
         return userApplicationRepository.save(
             UserApplication(
@@ -51,38 +53,61 @@ class UserApplicationService(
         )
     }
 
-    // Метод для копирования шаблона и вставки данных пользователя
     private fun createDocumentWithUserData(templatePath: Path, user: User): String {
         val currentDate = LocalDate.now()
+
         // 1. Открываем шаблон документа
         Files.newInputStream(templatePath).use { inputStream ->
             val document = XWPFDocument(inputStream)
 
-            // 2. Проходим по параграфам и заменяем маркеры данными пользователя
+            // 2. Проходим по абзацам вне таблиц и заменяем маркеры
             document.paragraphs.forEach { paragraph ->
                 paragraph.runs.forEach { run ->
-                    if (run.text().contains("{{fullname}}")) {
-                        run.setText(run.text().replace("{{fullname}}", user.profile?.passportData?.fullname ?: ""), 0)
-                    }
-                    if (run.text().contains("{{userCourse}}")) {
-                        run.setText(run.text().replace("{{userCourse}}", "4"), 0)
-                    }
-                    if (run.text().contains("{{day}}")) {
-                        run.setText(run.text().replace("{{day}}", currentDate.dayOfMonth.toString()), 0)
-                    }
-                    if (run.text().contains("{{month}}")) {
-                        run.setText(run.text().replace("{{month}}", currentDate.monthValue.toString()), 0)
-                    }
-                    if (run.text().contains("{{year}}")) {
-                        run.setText(run.text().replace("{{year}}", currentDate.year.toString()), 0)
+                    var runText = run.text()
+
+                    // Преобразуем текст с заменой маркеров
+                    val updatedText = runText
+                        .replace("{{fullname}}", user.profile?.passportData?.fullname ?: "")
+                        .replace("{{userCourse}}", "4")
+                        .replace("{{day}}", currentDate.dayOfMonth.toString())
+                        .replace("{{month}}", currentDate.monthValue.toString())
+                        .replace("{{year}}", currentDate.year.toString())
+
+                    // Удаляем старый текст и устанавливаем новый
+                    run.setText("", 0) // Удаляем старый текст
+                    run.setText(updatedText, 0) // Устанавливаем новый текст
+                }
+            }
+
+            // 3. Проходим по таблицам и заменяем маркеры внутри ячеек таблицы
+            document.tables.forEach { table ->
+                table.rows.forEach { row ->
+                    row.tableCells.forEach { cell ->
+                        cell.paragraphs.forEach { paragraph ->
+                            paragraph.runs.forEach { run ->
+                                var runText = run.text()
+
+                                // Преобразуем текст с заменой маркеров
+                                val updatedText = runText
+                                    .replace("{{fullname}}", user.profile?.passportData?.fullname ?: "")
+                                    .replace("{{userCourse}}", "4")
+                                    .replace("{{day}}", currentDate.dayOfMonth.toString())
+                                    .replace("{{month}}", currentDate.monthValue.toString())
+                                    .replace("{{year}}", currentDate.year.toString())
+
+                                // Удаляем старый текст и устанавливаем новый
+                                run.setText("", 0) // Удаляем старый текст
+                                run.setText(updatedText, 0) // Устанавливаем новый текст
+                            }
+                        }
                     }
                 }
             }
 
-            // 3. Определим путь для сохранения нового документа
+            // 4. Определим путь для сохранения нового документа
             val newDocumentPath = Paths.get("$uploadsDir/${UUID.randomUUID()}.docx")
 
-            // 4. Сохраним новый документ на файловую систему
+            // 5. Сохраним новый документ на файловую систему
             Files.newOutputStream(newDocumentPath).use { outputStream ->
                 document.write(outputStream)
             }
@@ -90,6 +115,7 @@ class UserApplicationService(
             return newDocumentPath.fileName.toString()
         }
     }
+
 
     fun getAll(applicationStatus: ApplicationStatus = ApplicationStatus.SENT): Iterable<UserApplication> {
         return userApplicationRepository.findAll().filter { it.applicationStatus == applicationStatus }
