@@ -40,9 +40,9 @@ token:
 #dirs:
 #  templates: C:\Users\User\Documents\_PROJECTS\JAVA\chesuburoapi\src\main\resources\templates
 #  uploads: C:\Users\User\Documents\_PROJECTS\JAVA\chesuburoapi\src\main\resources\uploads
-#dirs:
-#  templates: /app/resources/templates
-#  uploads: /app/resources/uploads
 dirs:
-  templates: /Users/rozoomcool/Documents/_PROJECTS/backend/chesuburoapi/src/main/resources/templates
-  uploads: /Users/rozoomcool/Documents/_PROJECTS/backend/chesuburoapi/src/main/resources/uploads
+  templates: /app/resources/templates
+  uploads: /app/resources/uploads
+#dirs:
+#  templates: /Users/rozoomcool/Documents/_PROJECTS/backend/chesuburoapi/src/main/resources/templates
+#  uploads: /Users/rozoomcool/Documents/_PROJECTS/backend/chesuburoapi/src/main/resources/uploads
