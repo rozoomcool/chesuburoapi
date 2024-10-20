@@ -106,22 +106,22 @@ class UserApplicationService(
                 }
             }
 
-            // 4. Вставляем изображение в конец документа
-            if (Files.exists(imagePath)) {
-                val imageData = Files.readAllBytes(imagePath)
-                val pictureType = getPictureType(imagePath)
-
-                // Создаем новый абзац для изображения
-                val imageParagraph = document.createParagraph()
-                val run = imageParagraph.createRun()
-
-                // Вставляем изображение
-                val width = 150 // ширина изображения в пикселях
-                val height = 150 // высота изображения в пикселях
-                Files.newInputStream(imagePath).use { imageInputStream ->
-                    run.addPicture(imageInputStream, pictureType, imagePath.fileName.toString(), Units.toEMU(width.toDouble()), Units.toEMU(height.toDouble()))
-                }
-            }
+//            // 4. Вставляем изображение в конец документа
+//            if (Files.exists(imagePath)) {
+//                val imageData = Files.readAllBytes(imagePath)
+//                val pictureType = getPictureType(imagePath)
+//
+//                // Создаем новый абзац для изображения
+//                val imageParagraph = document.createParagraph()
+//                val run = imageParagraph.createRun()
+//
+//                // Вставляем изображение
+//                val width = 150 // ширина изображения в пикселях
+//                val height = 150 // высота изображения в пикселях
+//                Files.newInputStream(imagePath).use { imageInputStream ->
+//                    run.addPicture(imageInputStream, pictureType, imagePath.fileName.toString(), Units.toEMU(width.toDouble()), Units.toEMU(height.toDouble()))
+//                }
+//            }
 
 
             // 5. Определим путь для сохранения нового документа
